@@ -55,5 +55,17 @@
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
+    <script>
+      window.addEventListener('error', function (event) {
+        var fallback = document.querySelector('.app-fallback p')
+        if (!fallback || document.documentElement.dataset.quickbite === 'mounted') return
+        fallback.textContent = 'QuickBite could not load the app script. Error: ' + (event.message || 'Script failed to load.')
+      })
+      window.addEventListener('unhandledrejection', function (event) {
+        var fallback = document.querySelector('.app-fallback p')
+        if (!fallback || document.documentElement.dataset.quickbite === 'mounted') return
+        fallback.textContent = 'QuickBite could not finish loading. Error: ' + (event.reason && event.reason.message ? event.reason.message : event.reason)
+      })
+    </script>
   </body>
 </html>
