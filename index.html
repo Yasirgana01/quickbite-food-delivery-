@@ -7,6 +7,25 @@
     <title>QuickBite — Premium Food Delivery</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <script>
+      function updateQuickBiteFallback(message) {
+        var fallback = document.querySelector('.app-fallback p')
+        if (!fallback || document.documentElement.dataset.quickbite === 'mounted') return
+        fallback.textContent = message
+      }
+
+      window.addEventListener('error', function (event) {
+        updateQuickBiteFallback('QuickBite could not load the app script. Error: ' + (event.message || 'Script failed to load.'))
+      })
+
+      window.addEventListener('unhandledrejection', function (event) {
+        updateQuickBiteFallback('QuickBite could not finish loading. Error: ' + (event.reason && event.reason.message ? event.reason.message : event.reason))
+      })
+
+      window.setTimeout(function () {
+        updateQuickBiteFallback('QuickBite HTML loaded, but the Vue app script did not run. Please check that JavaScript is enabled and no browser extension, proxy, antivirus, or network filter is blocking /assets/*.js files.')
+      }, 3500)
+    </script>
     <style>
       .app-fallback {
         min-height: 100vh;
@@ -55,17 +74,14 @@
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
-    <script>
-      window.addEventListener('error', function (event) {
-        var fallback = document.querySelector('.app-fallback p')
-        if (!fallback || document.documentElement.dataset.quickbite === 'mounted') return
-        fallback.textContent = 'QuickBite could not load the app script. Error: ' + (event.message || 'Script failed to load.')
-      })
-      window.addEventListener('unhandledrejection', function (event) {
-        var fallback = document.querySelector('.app-fallback p')
-        if (!fallback || document.documentElement.dataset.quickbite === 'mounted') return
-        fallback.textContent = 'QuickBite could not finish loading. Error: ' + (event.reason && event.reason.message ? event.reason.message : event.reason)
-      })
-    </script>
+    <noscript>
+      <style>
+        .app-fallback p::after {
+          content: " JavaScript is disabled in this browser.";
+          color: #b91c1c;
+          font-weight: 700;
+        }
+      </style>
+    </noscript>
   </body>
 </html>
