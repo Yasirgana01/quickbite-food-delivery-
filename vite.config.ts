@@ -11,12 +11,4 @@ export default defineConfig({
   server: {
     open: true,
   },
-  build: {
-    rollupOptions: {
-      output: {
-        format: 'iife',
-        inlineDynamicImports: true,
-      },
-    },
-  },
 })
